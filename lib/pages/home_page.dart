@@ -1,5 +1,10 @@
+import 'package:financeapp/models/notice.dart';
 import 'package:financeapp/models/plan.dart';
+import 'package:financeapp/widgets/footer_menu.dart';
+import 'package:financeapp/widgets/notice_card.dart';
 import 'package:financeapp/widgets/plan_card.dart';
+import 'package:financeapp/widgets/porfolio_resume.dart';
+import 'package:financeapp/widgets/subtitule.dart';
 import 'package:financeapp/widgets/title.dart';
 import 'package:flutter/material.dart';
 
@@ -25,6 +30,32 @@ class HomePage extends StatelessWidget {
     ),
   ];
 
+  final List<Notice> notices = [
+    Notice(
+      title: 'Smart Saving',
+      descripction:
+          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
+      imageURL: 'assets/img/notice1.png',
+    ),
+    Notice(
+      title: 'Start Investing Today',
+      descripction:
+          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
+      imageURL: 'assets/img/notice4.png',
+    ),
+    Notice(
+      title: 'Diversify Wisely',
+      descripction:
+          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
+      imageURL: 'assets/img/notice3.png',
+    ),
+    Notice(
+      title: 'Track Your Spending',
+      descripction:
+          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
+      imageURL: 'assets/img/notice2.png',
+    ),
+  ];
   HomePage({super.key});
 
   @override
@@ -47,68 +78,11 @@ class HomePage extends StatelessWidget {
             children: [
               MyTitle(text: 'Welcome, Erik.'),
               SizedBox(height: 18),
-              Container(
-                width: double.infinity,
-                height: 130,
-                decoration: BoxDecoration(
-                  color: Color(0xff31A062),
-                  borderRadius: BorderRadius.all(Radius.circular(25)),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Your total asset porfolio',
-                        style: TextStyle(fontSize: 18, color: Colors.white),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            '\$ 1,580,000',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              color: Color(0xFFFEFFFE),
-                              borderRadius: BorderRadius.all(
-                                Radius.circular(12),
-                              ),
-                            ),
-                            child: Padding(
-                              padding: const EdgeInsets.symmetric(
-                                vertical: 8,
-                                horizontal: 20,
-                              ),
-                              child: Text(
-                                'Invest now',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  color: Color(0xff31A062),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              PorfolioResume(),
               SizedBox(height: 22),
               Row(
                 children: [
-                  Text(
-                    'Best Plans',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
+                  MySubtitle(title: 'Best Plans'),
                   Spacer(),
                   Text(
                     'See All',
@@ -138,46 +112,16 @@ class HomePage extends StatelessWidget {
               SizedBox(height: 20),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Basic Type of investments',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'This is how you set your foot for 2020. Stock Market recession. Whats next ajsndkjasndjnajksnd aksdnjasn',
-                              maxLines: 2,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(color: Colors.grey[600]),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(width: 12),
-                      CircleAvatar(
-                        radius: 35,
-                        backgroundImage: AssetImage(
-                          'assets/img/onboarding.png',
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
+                children: List.generate(
+                  notices.length,
+                  (index) => NoticeCard(notice: notices[index]),
+                ),
               ),
             ],
           ),
         ),
       ),
+      bottomNavigationBar: MyFooterMenu(),
     );
   }
 }
