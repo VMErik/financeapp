@@ -2,6 +2,8 @@ import 'package:financeapp/models/plan.dart';
 import 'package:financeapp/pages/detail_page.dart';
 import 'package:financeapp/pages/home_page.dart';
 import 'package:financeapp/pages/onboarding_page.dart';
+
+import 'package:financeapp/pages/profile_page.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter routes = GoRouter(
@@ -15,5 +17,6 @@ GoRouter routes = GoRouter(
         return DetailPage(plan: plan);
       },
     ),
+    GoRoute(path: '/profile', builder: (context, state) => ProfilePage()),
   ],
 );

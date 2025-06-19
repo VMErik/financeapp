@@ -212,6 +212,7 @@ class DetailPage extends StatelessWidget {
                 ),
               ],
             ),
+            Divider(),
           ],
         ),
       ),
