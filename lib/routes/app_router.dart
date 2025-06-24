@@ -4,6 +4,7 @@ import 'package:financeapp/pages/home_page.dart';
 import 'package:financeapp/pages/onboarding_page.dart';
 
 import 'package:financeapp/pages/profile_page.dart';
+import 'package:financeapp/pages/test.dart';
 import 'package:go_router/go_router.dart';
 
 GoRouter routes = GoRouter(

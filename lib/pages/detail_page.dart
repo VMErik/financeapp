@@ -70,21 +70,7 @@ class DetailPage extends StatelessWidget {
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
         ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10),
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-                color: Colors.grey,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(5.0),
-                child: Icon(Icons.close, size: 18, color: Colors.white),
-              ),
-            ),
-          ),
-        ],
+        actions: [_createActionButton()],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -92,81 +78,13 @@ class DetailPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SizedBox(
-                width: double.infinity,
-                height: 70,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text('Your total asset porfolio'),
-                    Row(
-                      children: [
-                        Text(
-                          '\$1,500.000   ',
-                          style: TextStyle(
-                            fontSize: 32,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Row(
-                          children: [
-                            Icon(Icons.upload, color: Colors.green),
-                            Text(' +2%', style: TextStyle(color: Colors.green)),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
+              _createHeaderInfo(),
               SizedBox(height: 22),
               MySubtitle(title: 'Current Plans'),
               SizedBox(height: 15),
-              Container(
-                width: double.infinity,
-                height: 180,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(40),
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [plan.fromColor, plan.toCOlor],
-                  ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(40.0),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        plan.name,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      Text(
-                        plan.benefit,
-                        style: TextStyle(fontSize: 16, color: Colors.white),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              _createPlan(),
               SizedBox(height: 15),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'See All Plans',
-                    style: TextStyle(fontSize: 22, color: Colors.red),
-                  ),
-                  Icon(Icons.arrow_forward_sharp, size: 15, color: Colors.red),
-                ],
-              ),
+              _createNavigation(),
               SizedBox(height: 15),
               MySubtitle(title: 'History'),
               SizedBox(height: 15),
@@ -178,6 +96,99 @@ class DetailPage extends StatelessWidget {
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _createNavigation() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'See All Plans',
+          style: TextStyle(fontSize: 22, color: Colors.red),
+        ),
+        Icon(Icons.arrow_forward_sharp, size: 15, color: Colors.red),
+      ],
+    );
+  }
+
+  Widget _createActionButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.grey,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Icon(Icons.close, size: 18, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _createHeaderInfo() {
+    return SizedBox(
+      width: double.infinity,
+      height: 70,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Your total asset porfolio'),
+          Row(
+            children: [
+              Text(
+                '\$1,500.000   ',
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.upload, color: Colors.green),
+                  Text(' +2%', style: TextStyle(color: Colors.green)),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _createPlan() {
+    return Container(
+      width: double.infinity,
+      height: 180,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(40),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [plan.fromColor, plan.toCOlor],
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(40.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              plan.name,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              plan.benefit,
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
+          ],
         ),
       ),
     );

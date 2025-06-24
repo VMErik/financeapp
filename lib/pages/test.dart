@@ -1,5 +1,6 @@
 import 'package:financeapp/models/notice.dart';
 import 'package:financeapp/models/plan.dart';
+import 'package:financeapp/models/transaction.dart';
 import 'package:financeapp/widgets/button.dart';
 import 'package:financeapp/widgets/footer_menu.dart';
 import 'package:financeapp/widgets/notice_card.dart';
@@ -12,67 +13,76 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class TestPage extends StatelessWidget {
-  final List<Plan> plans = [
-    Plan(
-      name: 'Gold',
-      benefit: '30% return',
-      fromColor: Colors.amber,
-      toCOlor: Colors.orange,
+  final List<Transaction> transactions = [
+    Transaction(
+      value: 200000,
+      description: 'Buy"APPL" Stock',
+      date: '14 JUN 2025',
+      type: "BUY",
     ),
-    Plan(
-      name: 'Silver',
-      benefit: '60% return',
-      fromColor: Colors.blueGrey,
-      toCOlor: Colors.black45,
+    Transaction(
+      value: 150820,
+      description: 'Sell "TLKM" Stock',
+      date: '13 JUN 2025',
+      type: "SELL",
     ),
-    Plan(
-      name: 'Platinum',
-      benefit: '90% return',
-      fromColor: Colors.deepPurple,
-      toCOlor: Colors.blue,
+    Transaction(
+      value: 92500,
+      description: 'Buy "TLKM" Stock',
+      date: '11 JUN 2025',
+      type: "BUY",
+    ),
+    Transaction(
+      value: 150000,
+      description: 'Sell "FB" Stock',
+      date: '11 JUN 2025',
+      type: "SELL",
+    ),
+    Transaction(
+      value: 152485,
+      description: 'Sell "APPL" Stock',
+      date: '10 JUN 2025',
+      type: "SELL",
+    ),
+    Transaction(
+      value: 92500,
+      description: 'Buy "TLKM" Stock',
+      date: '09 JUN 2025',
+      type: "BUY",
+    ),
+    Transaction(
+      value: 150000,
+      description: 'Sell "FB" Stock',
+      date: '09 JUN 2025',
+      type: "SELL",
+    ),
+    Transaction(
+      value: 152485,
+      description: 'Sell "APPL" Stock',
+      date: '08 JUN 2025',
+      type: "SELL",
     ),
   ];
 
-  final List<Notice> notices = [
-    Notice(
-      title: 'Smart Saving',
-      descripction:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
-      imageURL: 'assets/img/notice1.png',
-    ),
-    Notice(
-      title: 'Start Investing Today',
-      descripction:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
-      imageURL: 'assets/img/notice4.png',
-    ),
-    Notice(
-      title: 'Diversify Wisely',
-      descripction:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
-      imageURL: 'assets/img/notice3.png',
-    ),
-    Notice(
-      title: 'Track Your Spending',
-      descripction:
-          'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industrys standard dummy text ever since the 1500s,',
-      imageURL: 'assets/img/notice2.png',
-    ),
-  ];
-
+  final Plan plan = Plan(
+    name: 'Platinum',
+    benefit: '90% return',
+    fromColor: Colors.deepPurple,
+    toCOlor: Colors.blue,
+  );
   TestPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Icon(Icons.menu),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Icon(Icons.notifications_none_rounded),
+        title: Center(
+          child: Text(
+            'My Asset',
+            style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
-        ],
+        ),
+        actions: [_createActionButton()],
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -80,51 +90,154 @@ class TestPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              MyTitle(text: 'Welcome, Erik'),
-              SizedBox(height: 18),
-              PorfolioResume(),
+              _createHeaderInfo(),
               SizedBox(height: 22),
-              Row(
-                children: [
-                  MySubtitle(title: 'Best Plans'),
-                  Spacer(),
-                  Text(
-                    'See All',
-                    style: TextStyle(fontSize: 16, color: Colors.red),
-                  ),
-                  Icon(Icons.arrow_forward_sharp, size: 15, color: Colors.red),
-                ],
-              ),
-              SizedBox(height: 14),
-              SizedBox(
-                height: 200,
-                child: ListView.separated(
-                  scrollDirection: Axis.horizontal,
-                  itemBuilder: (context, index) {
-                    return PlanCard(plan: plans[index]);
-                  },
-                  separatorBuilder: (context, index) => SizedBox(width: 12),
-                  itemCount: plans.length,
-                ),
-              ),
-              SizedBox(height: 22),
-              Text(
-                'Investiment Guide',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 20),
+              MySubtitle(title: 'Current Plans'),
+              SizedBox(height: 15),
+              _createPlan(),
+              SizedBox(height: 15),
+              _createNavigation(),
+              MySubtitle(title: 'History'),
+              SizedBox(height: 15),
               Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: List.generate(
-                  notices.length,
-                  (index) => NoticeCard(notice: notices[index]),
+                  transactions.length,
+                  (index) => _createHistoryCard(transactions[index]),
                 ),
               ),
             ],
           ),
         ),
       ),
-      bottomNavigationBar: MyFooterMenu(),
+    );
+  }
+
+  Widget _createNavigation() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        Text(
+          'See All Plans',
+          style: TextStyle(fontSize: 22, color: Colors.red),
+        ),
+        Icon(Icons.arrow_forward_sharp, size: 15, color: Colors.red),
+      ],
+    );
+  }
+
+  Widget _createActionButton() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 10),
+      child: Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(50),
+          color: Colors.grey,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(5.0),
+          child: Icon(Icons.close, size: 18, color: Colors.white),
+        ),
+      ),
+    );
+  }
+
+  Widget _createHeaderInfo() {
+    return SizedBox(
+      width: double.infinity,
+      height: 70,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Your total asset porfolio'),
+          Row(
+            children: [
+              Text(
+                '\$1,500.000   ',
+                style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
+              ),
+              Row(
+                children: [
+                  Icon(Icons.upload, color: Colors.green),
+                  Text(' +2%', style: TextStyle(color: Colors.green)),
+                ],
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _createPlan() {
+    return Container(
+      width: double.infinity,
+      height: 180,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(40),
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [plan.fromColor, plan.toCOlor],
+        ),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(40.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              plan.name,
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+              ),
+            ),
+            Text(
+              plan.benefit,
+              style: TextStyle(fontSize: 16, color: Colors.white),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _createHistoryCard(Transaction transaction) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      child: SizedBox(
+        width: double.infinity,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              "\$ ${transaction.value}",
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: transaction.type == "SELL" ? Colors.green : Colors.black,
+              ),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  transaction.description,
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+                Text(
+                  transaction.date,
+                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                ),
+              ],
+            ),
+            Divider(),
+          ],
+        ),
+      ),
     );
   }
 }
